@@ -97,7 +97,7 @@ impl KeystoreParams {
         let (password_interactive, password) = (self.password_interactive, self.password.clone());
 
         let pass = if password_interactive {
-            let password = rpassword::read_password_from_tty(Some("Key password: "))?;
+            let password = rpassword::prompt_password("Key password: ")?;
             Some(SecretString::new(password))
         } else {
             password
@@ -108,6 +108,5 @@ impl KeystoreParams {
 }
 
 fn input_keystore_password() -> Result<String> {
-    rpassword::read_password_from_tty(Some("Keystore password: "))
-        .map_err(|e| format!("{:?}", e).into())
+    rpassword::prompt_password("Keystore password: ").map_err(|e| format!("{:?}", e).into())
 }
